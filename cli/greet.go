@@ -11,28 +11,24 @@ import (
 func main() {
     // args()
     // flagSample()
-    boolCount()
+    // boolCount()
+    // placeholder()
+    altername()
 }
 
-func boolCount(){
-    var count int
 
+
+// 引数
+func args(){
     app := &cli.App{
-        Flags: []cli.Flag{
-            &cli.BoolFlag{
-                Name:        "foo",
-                Usage:       "foo greeting",
-                Count: &count,
-            },
-        },
         Action: func(cCtx *cli.Context) error {
-            fmt.Println("count", count)
+            fmt.Printf("Hello %q", cCtx.Args().Get(0))
             return nil
         },
     }
 
-    // greet --foo --foo --foo
-    // count 3
+    // greet hello
+    // hello 
 
     if err := app.Run(os.Args); err != nil {
         log.Fatal(err)
@@ -73,19 +69,80 @@ func flagSample(){
     }
 }
 
-// 引数
-func args(){
+func boolCount(){
+    var count int
+
     app := &cli.App{
+        Flags: []cli.Flag{
+            &cli.BoolFlag{
+                Name:        "foo",
+                Usage:       "foo greeting",
+                Count: &count,
+            },
+        },
         Action: func(cCtx *cli.Context) error {
-            fmt.Printf("Hello %q", cCtx.Args().Get(0))
+            fmt.Println("count", count)
             return nil
         },
     }
 
-    // greet hello
-    // hello 
+    // greet --foo --foo --foo
+    // count 3
 
     if err := app.Run(os.Args); err != nil {
         log.Fatal(err)
     }
 }
+
+func placeholder (){
+    app := &cli.App{
+        Flags: []cli.Flag {
+           &cli.StringFlag{
+                Name: "config",
+                Aliases: []string{"c"},
+                Usage: "Load configuration from 'FILE'",
+            },
+        },
+    }
+
+    if err := app.Run(os.Args); err !=nil{
+        log.Fatal(err)
+    }  
+}
+
+func altername(){
+    app := &cli.App{
+        Flags:[]cli.Flag{
+            &cli.StringFlag{
+                Name:"lang",
+                Aliases:[]string{"l"},
+                Value : "english",
+                Usage : "language for greeting",
+            },
+        },
+        Action: func(cCtx *cli.Context) error {
+            lang := cCtx.String("lang")
+            if lang == "jp"{
+                fmt.Println("こんにちは")
+                return nil
+            }
+            if lang=="en"{
+                fmt.Println("hello")
+                return nil
+            }
+            fmt.Println("Available options are ev | jp")
+            return nil
+        },
+    }
+    // cli >>>greet -l jp
+    // こんにちは
+    // cli >>>greet -l en
+    // hello
+    // cli >>>greet -l fc
+    // Available options are ev | jp
+    
+    if err := app.Run(os.Args); err !=nil{
+        log.Fatal(err)
+    }
+}
+
