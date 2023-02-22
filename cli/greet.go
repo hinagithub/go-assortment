@@ -12,31 +12,20 @@ func main() {
     app := &cli.App{
         Flags: []cli.Flag{
             &cli.StringFlag{
-                Name:    "config",
-                Aliases: []string{"c"},
-                Usage:   "Load configuration from `FILE`",
-            },
-            &cli.StringFlag{
-                Name:    "test",
-                Aliases: []string{"t"},
-                Usage:   "just test ",
-            },
-            &cli.StringFlag{
-                Name:    "lang",
-                Aliases: []string{"l"},
+                Name:  "lang",
                 Value: "english",
-                Usage:   "just test ",
+                Usage: "language for the greeting",
             },
         },
-        Action :func(cCtx *cli.Context)error {
-            name:= "Nefertiti"
-            if cCtx.NArg()>0{
+        Action: func(cCtx *cli.Context) error {
+            name := "Nefertiti"
+            if cCtx.NArg() > 0 {
                 name = cCtx.Args().Get(0)
             }
-            if cCtx.String("lang")=="jp"{
-                fmt.Println("こんにちは, ", name)
-            }else{
-                fmt.Println("Hello, ", name)
+            if cCtx.String("lang") == "jp" {
+                fmt.Println("こんにちは", name)
+            } else {
+                fmt.Println("Hello", name)
             }
             return nil
         },
