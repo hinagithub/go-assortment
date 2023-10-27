@@ -1,5 +1,7 @@
-cliの実行方法
+## cliの実行方法
+
+例: 
 ```
-cli >>>greet --lang=jp taro
+greet --lang=jp taro
 こんにちは taro
 ```
